@@ -1,6 +1,25 @@
 import { Asset, AssetCategory } from './types';
 
 export const ASSETS: Asset[] = [
+  // Crypto
+  { name: 'Bitcoin (BTCUSD)', category: AssetCategory.CRYPTO },
+  { name: 'Ethereum (ETHUSD)', category: AssetCategory.CRYPTO },
+  { name: 'Solana (SOLUSD)', category: AssetCategory.CRYPTO },
+  { name: 'XRP (XRPUSD)', category: AssetCategory.CRYPTO },
+  { name: 'Litecoin (LTCUSD)', category: AssetCategory.CRYPTO },
+  { name: 'Bitcoin Cash (BCHUSD)', category: AssetCategory.CRYPTO },
+  { name: 'Dogecoin (DOGEUSD)', category: AssetCategory.CRYPTO },
+  { name: 'BNB (BNBUSD)', category: AssetCategory.CRYPTO },
+  { name: 'Tether (USDTUSD)', category: AssetCategory.CRYPTO },
+  // Indices
+  { name: 'Nasdaq (IXIC)', category: AssetCategory.INDICES },
+  { name: 'Dow Jones (DJI)', category: AssetCategory.INDICES },
+  { name: 'S&P 500 (INX)', category: AssetCategory.INDICES },
+  { name: 'U.S. Dollar Index (DXY)', category: AssetCategory.INDICES },
+  { name: 'NASDAQ 100 (NDX)', category: AssetCategory.INDICES },
+  { name: 'Hang Seng (HK50)', category: AssetCategory.INDICES },
+  { name: 'Nikkei 225 (JPN225)', category: AssetCategory.INDICES },
+  { name: 'DAX (GER40)', category: AssetCategory.INDICES },
   // Forex
   { name: 'EUR/USD', category: AssetCategory.FOREX },
   { name: 'GBP/USD', category: AssetCategory.FOREX },
@@ -16,18 +35,4 @@ export const ASSETS: Asset[] = [
   { name: 'Gold (XAU/USD)', category: AssetCategory.COMMODITIES },
   { name: 'Silver (XAG/USD)', category: AssetCategory.COMMODITIES },
   { name: 'WTI Crude Oil', category: AssetCategory.COMMODITIES },
-  // Indices
-  { name: 'Nasdaq 100', category: AssetCategory.INDICES },
-  { name: 'Dow Jones 30', category: AssetCategory.INDICES },
-  { name: 'U.S. Dollar Index (DXY)', category: AssetCategory.INDICES },
-  { name: 'S&P 500', category: AssetCategory.INDICES },
-  // Crypto
-  { name: 'Bitcoin (BTC/USD)', category: AssetCategory.CRYPTO },
-  { name: 'Ethereum (ETH/USD)', category: AssetCategory.CRYPTO },
-  { name: 'Solana (SOL/USD)', category: AssetCategory.CRYPTO },
-  { name: 'XRP (XRP/USD)', category: AssetCategory.CRYPTO },
-  { name: 'Litecoin (LTC/USD)', category: AssetCategory.CRYPTO },
-  { name: 'Bitcoin Cash (BCH/USD)', category: AssetCategory.CRYPTO },
-  { name: 'Dogecoin (DOGE/USD)', category: AssetCategory.CRYPTO },
-  { name: 'BNB (BNB/USD)', category: AssetCategory.CRYPTO },
 ];

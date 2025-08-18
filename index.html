@@ -5,25 +5,34 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Trading Signals</title>
+    <title>AI Signals</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              'primary': '#0D1117',
-              'secondary': '#161B22',
-              'accent': '#58A6FF',
-              'success': '#28A745',
-              'danger': '#DC3545',
-              'border-color': '#30363D',
-              'text-primary': '#C9D1D9',
-              'text-secondary': '#8B949E',
+              'primary': '#05070F',
+              'secondary': '#101423',
+              'accent': '#3B82F6',
+              'success': '#22C55E',
+              'danger': '#EF4444',
+              'border-color': '#1E293B',
+              'text-primary': '#FFFFFF',
+              'text-secondary': '#9CA3AF',
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
             },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-in-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+            }
           },
         },
       }
@@ -41,6 +50,7 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-primary text-text-primary">
     <div id="root"></div>

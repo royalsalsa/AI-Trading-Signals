@@ -4,9 +4,10 @@ import { Signal, View } from './types';
 import Header from './components/Header';
 import SignalGeneratorPage from './components/SignalGeneratorPage';
 import SignalHistoryPage from './components/SignalHistoryPage';
+import AboutPage from './components/AboutPage';
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<View>(View.SIGNALS);
+  const [currentView, setCurrentView] = useState<View>(View.ABOUT);
   const [signalHistory, setSignalHistory] = useState<Signal[]>([]);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-primary font-sans">
       <Header currentView={currentView} setCurrentView={setCurrentView} />
       <main className="container mx-auto p-4 md:p-8">
+        {currentView === View.ABOUT && <AboutPage />}
         {currentView === View.SIGNALS && (
           <SignalGeneratorPage addSignalToHistory={addSignalToHistory} />
         )}
@@ -53,9 +55,6 @@ const App: React.FC = () => {
           <SignalHistoryPage signalHistory={signalHistory} clearHistory={clearHistory} />
         )}
       </main>
-       <footer className="text-center p-4 text-text-secondary text-sm">
-        <p>Disclaimer: This tool is for informational purposes only and not financial advice. Trading involves risk.</p>
-      </footer>
     </div>
   );
 };
