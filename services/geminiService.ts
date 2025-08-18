@@ -7,39 +7,40 @@ if (!process.env.API_KEY) {
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-const parseSignalFromText = (text: string): Omit<Signal, 'assetName' | 'timestamp' | 'sources'> => {
-  // Use case-insensitive flag and make colons optional to handle minor formatting variations from the AI.
-  
-  // Match "Analysis:" and everything after it until the next label starts, or end of string.
-  // The (?=...) is a positive lookahead to not consume the next label.
-  const analysisMatch = text.match(/Analysis:?\s*([\s\S]*?)(?=\s*(Entry Price|Stop Loss|Take Profit)|$)/i);
-
-  // Match labels that may or may not have a colon and grab the rest of the line.
-  const entryMatch = text.match(/Entry Price:?\s*(.*)/i);
-  const stopLossMatch = text.match(/Stop Loss:?\s*(.*)/i);
-  const takeProfitMatch = text.match(/Take Profit:?\s*(.*)/i);
-
-  return {
-    analysis: analysisMatch ? analysisMatch[1].trim() : 'Could not parse analysis.',
-    entry: entryMatch ? entryMatch[1].trim() : 'N/A',
-    stopLoss: stopLossMatch ? stopLossMatch[1].trim() : 'N/A',
-    takeProfit: takeProfitMatch ? takeProfitMatch[1].trim() : 'N/A',
-  };
-};
-
 export const generateTradingSignal = async (assetName: string): Promise<Signal> => {
   const prompt = `
     Perform a detailed technical and fundamental analysis for ${assetName} using the most recent web data available.
     This request is for informational and educational purposes ONLY. The output is a hypothetical analysis and MUST NOT be considered financial advice.
 
-    Based on your analysis, provide a summary with the following points, labeled exactly as follows on separate lines:
+    Based on your analysis, provide a complete JSON object. The JSON object MUST be the only thing in your response. Do not include any text before or after it, and do not use markdown code fences.
 
-    Analysis: [A detailed summary of your findings in 2-3 sentences.]
-    Entry Price: [A hypothetical price level based on technical indicators.]
-    Stop Loss: [A hypothetical price level for risk management.]
-    Take Profit: [A hypothetical price level for a target.]
-
-    Strictly adhere to this format. Do not add any other disclaimers, text, or explanations in your response.
+    The JSON object must conform to the following structure:
+    {
+      "signal": "'BUY' or 'SELL'",
+      "price": "string (current real-time market price, from the most up-to-date source found)",
+      "analysis": "string (2-3 sentences summary)",
+      "entry": "string (hypothetical entry price)",
+      "stopLoss": "string (hypothetical stop loss price)",
+      "takeProfit": "string (hypothetical take profit price)",
+      "pivotPoints": {
+        "r3": "string",
+        "r2": "string",
+        "r1": "string",
+        "pp": "string",
+        "s1": "string",
+        "s2": "string",
+        "s3": "string"
+      },
+      "rsi": {
+        "value": 50.00,
+        "interpretation": "string ('Neutral', 'Oversold', or 'Overbought')"
+      },
+      "movingAverages": {
+        "ma50": "string (50-day SMA value)",
+        "ma200": "string (200-day SMA value)",
+        "analysis": "string (brief summary of price vs SMAs)"
+      }
+    }
   `;
 
   try {
@@ -51,7 +52,11 @@ export const generateTradingSignal = async (assetName: string): Promise<Signal> 
       },
     });
 
-    const parsedData = parseSignalFromText(response.text);
+    const rawText = response.text.trim();
+    // Clean potential markdown fences from the response
+    const jsonText = rawText.replace(/^```json\n?/, '').replace(/\n?```$/, '');
+
+    const parsedData = JSON.parse(jsonText);
 
     const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
     const sources: SignalSource[] = groundingChunks
@@ -61,14 +66,21 @@ export const generateTradingSignal = async (assetName: string): Promise<Signal> 
         }))
         .filter((source: SignalSource) => source.uri !== '#');
 
+    // The prompt now requests 'entry', 'stopLoss', etc., which directly matches the Signal type.
     return {
       ...parsedData,
       assetName,
       sources,
       timestamp: new Date().toISOString(),
+      pivotPoints: parsedData.pivotPoints || {},
+      rsi: parsedData.rsi || { value: 0, interpretation: 'N/A' },
+      movingAverages: parsedData.movingAverages || {},
     };
   } catch (error) {
     console.error("Error generating trading signal:", error);
+    if (error instanceof SyntaxError) {
+        throw new Error("Failed to get valid analysis from AI. The model returned an unexpected format.");
+    }
     throw new Error("Failed to get analysis from AI. The model may be overloaded or the content may have been blocked.");
   }
 };
