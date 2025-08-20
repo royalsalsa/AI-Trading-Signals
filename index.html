@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,25 +11,32 @@
         theme: {
           extend: {
             colors: {
-              'primary': '#05070F',
-              'secondary': '#101423',
+              'primary': '#0A192F',
+              'secondary': '#172A46',
               'accent': '#3B82F6',
+              'accent-hover': '#2563EB',
+              'accent-light': '#93C5FD',
               'success': '#22C55E',
               'danger': '#EF4444',
-              'border-color': '#1E293B',
-              'text-primary': '#FFFFFF',
-              'text-secondary': '#9CA3AF',
+              'border-color': '#233554',
+              'text-primary': '#CCD6F6',
+              'text-secondary': '#8892B0',
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
             },
             animation: {
               'fade-in': 'fadeIn 0.5s ease-in-out',
+              'pulse-bg': 'pulseBg 2s infinite ease-in-out',
             },
             keyframes: {
               fadeIn: {
                 '0%': { opacity: '0' },
                 '100%': { opacity: '1' },
+              },
+              pulseBg: {
+                '0%, 100%': { backgroundColor: 'rgba(59, 130, 246, 0.1)' },
+                '50%': { backgroundColor: 'rgba(59, 130, 246, 0.2)' },
               },
             }
           },
@@ -40,13 +46,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script type="importmap">
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+    <script type="importmap">
 {
   "imports": {
     "react/": "https://esm.sh/react@^19.1.1/",
     "react": "https://esm.sh/react@^19.1.1",
     "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.14.0"
+    "@google/genai": "https://esm.sh/@google/genai@^1.14.0",
+    "lightweight-charts": "https://esm.sh/lightweight-charts@^4.2.0"
   }
 }
 </script>
