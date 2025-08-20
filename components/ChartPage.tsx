@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Signal } from '../types';
 import SignalCard from './SignalCard';
